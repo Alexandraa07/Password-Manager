@@ -28,8 +28,8 @@ int main()
 
     do
     {
-        std::cout << "\n1-ADAUGARE\n2-CAUTARE\n3-STERGERE\n4-IESIRE\n";
-        std::cout << "Alege: ";
+        std::cout << "\n1-Add\n2-Search\n3-Delete\n4-Leave\n";
+        std::cout << "Choose: ";
         std::cin >> option;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -51,15 +51,16 @@ int main()
             std::cout << "Site: ";
             std::getline(std::cin, site);
             {
-                PasswordEntry e = manager.getEntry(site);
-                if (e.getWebsite() != "Inexistent")
+                PasswordEntry e;
+                if (manager.getEntry(site, e))
                 {
+
                     std::cout << "User: " << e.getUsername() << "\n";
                     std::cout << "Pass: " << e.getPassword() << "\n";
                 }
                 else
                 {
-                    std::cout << "Nu a fost gasit.\n";
+                    std::cout << "Couldn't been found.\n";
                 }
             }
             break;

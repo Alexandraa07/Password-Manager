@@ -63,16 +63,15 @@ void PasswordManager::addEntry(const std::string &site, const std::string &user,
     std::cout << "Succesfully saved!\n";
 }
 
-PasswordEntry PasswordManager::getEntry(const std::string &site)
+bool PasswordManager::getEntry(const std::string &site, PasswordEntry &out)
 {
     auto it = entries.find(site);
-    if (it != entries.end())
-    {
-        PasswordEntry copy = it->second;
-        copy.setPassword(decrypt(copy.getPassword()));
-        return copy;
-    }
-    return PasswordEntry("Inexistent", "", "");
+    if (it == entries.end())
+        return false;
+
+    out = it->second;
+    out.setPassword(decrypt(out.getPassword()));
+    return true;
 }
 
 void PasswordManager::deleteEntry(const std::string &site)
