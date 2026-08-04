@@ -44,15 +44,23 @@ bool PasswordManager::login(const std::string &inputPass)
 
 void PasswordManager::addEntry(const std::string &site, const std::string &user, const std::string &pass)
 {
+    if (site.empty() || pass.empty() || user.empty())
+    {
+        std::cout << "Site, user and password cannot be empty!\n";
+        return;
+    }
+
     if (entries.find(site) != entries.end())
     {
-        std::cout << "Entry deja exista. Se suprascrie.\n";
+        std::cout << "Entry already exists!\n";
     }
 
     std::string encrypted = encrypt(pass);
     entries[site] = PasswordEntry(site, user, encrypted);
 
-    std::cout << "Salvat cu succes!\n";
+    saveToFile();
+
+    std::cout << "Succesfully saved!\n";
 }
 
 PasswordEntry PasswordManager::getEntry(const std::string &site)
@@ -70,9 +78,12 @@ PasswordEntry PasswordManager::getEntry(const std::string &site)
 void PasswordManager::deleteEntry(const std::string &site)
 {
     if (entries.erase(site))
-        std::cout << "Sters cu succes!\n";
+    {
+        saveToFile();
+        std::cout << "Succesfully deleted!\n";
+    }
     else
-        std::cout << "Nu exista acest site.\n";
+        std::cout << "This site doesn't exist!\n";
 }
 
 void PasswordManager::saveToFile()
@@ -94,7 +105,8 @@ void PasswordManager::saveToFile()
 void PasswordManager::loadFromFile()
 {
     std::ifstream f("passwords.txt");
-    if (!f){
+    if (!f)
+    {
         hasExistingMaster = false;
         return;
     }
@@ -102,7 +114,7 @@ void PasswordManager::loadFromFile()
     entries.clear();
     std::getline(f, masterPasswordHash);
     hasExistingMaster = !masterPasswordHash.empty();
-    
+
     std::string site, user, pass;
     while (f >> site >> user >> pass)
     {
@@ -110,6 +122,7 @@ void PasswordManager::loadFromFile()
     }
 }
 
-bool PasswordManager::isFirstRun() const{
+bool PasswordManager::isFirstRun() const
+{
     return !hasExistingMaster;
 }
