@@ -30,8 +30,6 @@ std::string PasswordManager::decrypt(const std::string &data)
 PasswordManager::PasswordManager()
 {
     loadFromFile();
-    if (masterPasswordHash.empty())
-        masterPasswordHash = simpleHash("admin1007");
 }
 
 void PasswordManager::setMasterPassword(const std::string &newPass)
@@ -96,16 +94,22 @@ void PasswordManager::saveToFile()
 void PasswordManager::loadFromFile()
 {
     std::ifstream f("passwords.txt");
-    if (!f)
+    if (!f){
+        hasExistingMaster = false;
         return;
+    }
 
     entries.clear();
-
     std::getline(f, masterPasswordHash);
-
+    hasExistingMaster = !masterPasswordHash.empty();
+    
     std::string site, user, pass;
     while (f >> site >> user >> pass)
     {
         entries[site] = PasswordEntry(site, user, pass);
     }
+}
+
+bool PasswordManager::isFirstRun() const{
+    return !hasExistingMaster;
 }

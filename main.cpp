@@ -4,19 +4,27 @@
 
 int main()
 {
+    int option;
     PasswordManager manager;
     std::string masterPass;
 
-    std::cout << "Introdu master password: ";
-    std::getline(std::cin, masterPass);
-
-    if (!manager.login(masterPass))
+    if (manager.isFirstRun())
     {
-        std::cout << "Parola incorecta!\n";
-        return 0;
+        std::cout << "Choose a master password!\n";
+        std::getline(std::cin, masterPass);
+        manager.setMasterPassword(masterPass);
+        manager.saveToFile();
     }
-
-    int option;
+    else
+    {
+        std::cout << "Enter the master password!\n";
+        std::getline(std::cin, masterPass);
+        if (!manager.login(masterPass))
+        {
+            std::cout << "Inccorect password!\n";
+            return 0;
+        }
+    }
 
     do
     {

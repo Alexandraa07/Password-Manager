@@ -5,6 +5,7 @@
 
 class PasswordManager {
 private:
+    bool hasExistingMaster = false;
     std::map<std::string, PasswordEntry> entries;
     std::string masterPasswordHash;
 
@@ -24,4 +25,6 @@ public:
 
     void saveToFile();
     void loadFromFile();
+
+    bool isFirstRun() const;
 };
