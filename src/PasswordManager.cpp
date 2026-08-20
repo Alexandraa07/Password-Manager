@@ -1,45 +1,32 @@
 #include "PasswordManager.h"
-
-std::string PasswordManager::simpleHash(const std::string &input)
-{
-    unsigned long hash = 0;
-    for (char c : input)
-        hash = (hash * 31 + c) % 1000000;
-    return std::to_string(hash);
-}
+#include "CryptoManager.h"
 
 std::string PasswordManager::encrypt(const std::string &data)
 {
-    if (masterPasswordHash.empty())
-        return data;
-
-    std::string result = data;
-    for (size_t i = 0; i < data.size(); ++i)
-        result[i] = data[i] ^ masterPasswordHash[i % masterPasswordHash.size()];
-
-    return result;
+    return CryptoManager::encrypt(data, masterPasswordHash);
 }
 
 std::string PasswordManager::decrypt(const std::string &data)
 {
-    return encrypt(data); // XOR reversibil
+    return CryptoManager::decrypt(data, masterPasswordHash);
 }
 
 PasswordManager::PasswordManager()
 {
     storage.loadFromFile(masterPasswordHash, entries);
-
     hasExistingMaster = !masterPasswordHash.empty();
 }
 
 void PasswordManager::setMasterPassword(const std::string &newPass)
 {
-    masterPasswordHash = simpleHash(newPass);
+    masterPasswordHash = CryptoManager::hashPassword(newPass);
+    hasExistingMaster = true; 
+    storage.saveToFile(masterPasswordHash, entries);
 }
 
 bool PasswordManager::login(const std::string &inputPass)
 {
-    return simpleHash(inputPass) == masterPasswordHash;
+    return CryptoManager::hashPassword(inputPass) == masterPasswordHash;
 }
 
 bool PasswordManager::addEntry(const std::string &site, const std::string &user, const std::string &pass)

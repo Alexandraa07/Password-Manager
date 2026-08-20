@@ -1,9 +1,16 @@
 #include <iostream>
 #include <limits>
 #include "PasswordManager.h"
+#include "CryptoManager.h"
 
 int main()
 {
+    if (!CryptoManager::init())
+    {
+        std::cerr << "Eroare la initializarea CryptoManager!\n";
+        return 1;
+    }
+
     int option;
     PasswordManager manager;
     std::string masterPass;
@@ -13,7 +20,6 @@ int main()
         std::cout << "Choose a master password!\n";
         std::getline(std::cin, masterPass);
         manager.setMasterPassword(masterPass);
-        manager.saveToFile();
     }
     else
     {
@@ -86,8 +92,7 @@ int main()
             break;
 
         case 4:
-            manager.saveToFile();
-            std::cout << "Date salvate!\n";
+            std::cout << "Saved data!\n";
             break;
         }
 

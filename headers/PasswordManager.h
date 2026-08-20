@@ -14,7 +14,6 @@ private:
 
     std::string encrypt(const std::string &data);
     std::string decrypt(const std::string &data);
-    std::string simpleHash(const std::string &input);
 
 public:
     PasswordManager();

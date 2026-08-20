@@ -1,11 +1,6 @@
 #include "PasswordEntry.h"
 
-PasswordEntry::PasswordEntry()
-{
-    this->website = "";
-    this->username = "";
-    this->password = "";
-}
+PasswordEntry::PasswordEntry() = default;
 
 PasswordEntry::PasswordEntry(const std::string &website, const std::string &username, const std::string &password) : website(website), username(username), password(password) {}
 

@@ -3,7 +3,7 @@
 
 bool CredentialStorage::saveToFile(const std::string &masterPasswordHash, const std::map<std::string, PasswordEntry> &entries)
 {
-    std::ofstream file("password.txt");
+    std::ofstream file("data/passwords.txt");
 
     if (!file)
     {
@@ -20,15 +20,17 @@ bool CredentialStorage::saveToFile(const std::string &masterPasswordHash, const 
     return true;
 }
 
-bool loadFromFile(std::string &masterPasswordHash, std::map<std::string, PasswordEntry> &entries)
+bool CredentialStorage::loadFromFile(std::string &masterPasswordHash, std::map<std::string, PasswordEntry> &entries)
 {
 
-    std::ifstream file("password.txt");
+    std::ifstream file("data/passwords.txt");
 
     if (!file)
     {
-        return;
+        return false;
     }
+
+    entries.clear();
 
     std::getline(file, masterPasswordHash);
 
@@ -40,4 +42,6 @@ bool loadFromFile(std::string &masterPasswordHash, std::map<std::string, Passwor
     {
         entries[site] = PasswordEntry(site, user, pass);
     }
+
+    return true;
 }
