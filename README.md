@@ -55,8 +55,9 @@ cmake --build .
 ./password_manager
 ```
 
-```bash
 ## How to Use it
+
+```bash
 
 1. First Launch: Set up your Master Password.
 
