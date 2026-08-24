@@ -42,26 +42,29 @@ A local command-line application built in modern **C++** for securely storing an
 
 ### Build Steps
 
-# 1. Create data folder for storage
+```bash
+1. Create data folder for storage
 mkdir -p data
 
-# 2. Build using CMake
+2. Build using CMake
 mkdir build && cd build
 cmake ..
 cmake --build .
 
-# 3. Run the executable
+3. Run the executable
 ./password_manager
+```
 
-
+```bash
 ## How to Use it
 
-# 1. First Launch: Set up your Master Password.
+1. First Launch: Set up your Master Password.
 
-# 2. Subsequent Runs: Log in using your Master Password to unlock the vault.
+2. Subsequent Runs: Log in using your Master Password to unlock the vault.
 
-# 3. Interactive Menu:
-1 - Add: Store a new website, username, and password.
-2 - Search: Look up stored credentials by website name.
-3 - Delete: Remove a stored entry.
-4 - Leave: Save all changes and exit.
+3. Interactive Menu:
+   1 - Add: Store a new website, username, and password.
+   2 - Search: Look up stored credentials by website name.
+   3 - Delete: Remove a stored entry.
+   4 - Leave: Save all changes and exit.
+```
