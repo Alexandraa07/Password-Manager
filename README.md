@@ -1,49 +1,67 @@
-# Password Manager (C++)
+# Secure Password Manager (C++)
 
-## Description
+A local command-line application built in modern **C++** for securely storing and managing credentials. The project focuses on clean Object-Oriented Programming (OOP), dynamic data structures, and safe local persistence powered by the **libsodium** library.
 
-This application is a simple password manager, written in C++.
-It can be used by a user to securely store and retrieve credentials (username and password) for websites.
+---
 
-## Features
+## Key Features & Security
 
-- Authentication to access the application
-- Adding new credentials (website, username, password)
-- Searching for credentials by website name
-- Simple password encryption/decryption
-- Saving credentials to files
+- **Authenticated Encryption:** Passwords are encrypted before being written to disk using `crypto_secretbox`.
+- **Master Password Hashing:** User authentication is handled via `crypto_generichash` (BLAKE2b). Plain-text master passwords are never stored.
+- **Persistent Storage:** Encrypted entries are safely saved and loaded from disk (`data/passwords.txt`).
+- **In-Memory Lookup:** Fast record search, insertion, and deletion using `std::map`.
 
-## Technologies used
+---
 
-- C++
-- Object-oriented programming (OOP)
-- STL "map"
-- I/O functions
+## Technologies Used
 
-## Project architecture
+- **Language:** C++20
+- **Cryptography:** libsodium
+- **Build System:** CMake (v3.15+)
+- **Standard Library (STL):** `std::map`
+- **Concepts:** Object-Oriented Programming, Data Structures
 
-PasswordManager – managing credentials and file operations
-PasswordEntry – representing a set of credentials (website name, username and password)
-main.cpp – console interface
+---
 
-## How it works
+## Project Architecture
 
-1. Launch the program and enter the password (for easier use of the application, a password of "admin1007" was considered)
-2. After logging in, choose from the menu:
-    Add a new credential
-    Search stored credentials
-    Delete certain credentials
-    Exit the program
-3. Passwords are encrypted before being saved to a file.
-4. Upon exit, all data is saved for later use.
+- **`CryptoManager`** – Encapsulates encryption, decryption, and hashing logic via libsodium.
+- **`CredentialStorage`** – Handles file I/O operations (saving/loading data from disk).
+- **`PasswordEntry`** – Data model representing a credential set (website, username, password).
+- **`PasswordManager`** – Manages application workflow, authentication state, and entry lookup.
+- **`main.cpp`** – Console interface and user menu navigation.
 
-## How to run
+---
 
-1. Compile the program using a C++ compiler.
-Example using g++:
-g++ main.cpp PasswordManager.cpp PasswordEntry.cpp -o main
+## How to Build and Run
 
-2. Run the program:
-./main
+### Prerequisites
+- A C++20 compliant compiler (`g++`)
+- **CMake** (v3.15 or newer)
+- **libsodium** library installed
 
-3. Enter the master password to access the application.
+### Build Steps
+
+# 1. Create data folder for storage
+mkdir -p data
+
+# 2. Build using CMake
+mkdir build && cd build
+cmake ..
+cmake --build .
+
+# 3. Run the executable
+./password_manager
+
+
+## How to Use it
+
+# 1. First Launch: Set up your Master Password.
+
+# 2. Subsequent Runs: Log in using your Master Password to unlock the vault.
+
+# 3. Interactive Menu:
+1 - Add: Store a new website, username, and password.
+2 - Search: Look up stored credentials by website name.
+3 - Delete: Remove a stored entry.
+4 - Leave: Save all changes and exit.
